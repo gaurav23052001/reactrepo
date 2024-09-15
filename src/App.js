@@ -1,24 +1,43 @@
-import logo from './logo.svg';
+
 import './App.css';
+import Login from './componets/Login';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Dashbord from './componets/Dashbord';
+import UserManagment from './componets/UserManagment';
+import Header from './componets/Header';
+import SideNav from './componets/SideNav';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  // Link,
+  // useRouteMatch,
+  // useParams
+} from "react-router-dom";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      {/* <UserManagment/> */}
+      <div className='wrapper_main_page'>
+        <Switch>
+          <Route path={`${match.path}/:topicId`}>
+            <Topic />
+          </Route>
+          <Route path={match.path}>
+            <h3>Please select a topic.</h3>
+          </Route>
+        </Switch>
+
+
+        <Header />
+        <div className='wrap_sidebar'>
+          <SideNav />
+          <Dashbord />
+        </div>
+      </div>
+      {/* <Login/> */}
+    </>
   );
 }
 
