@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import logo from '../assests/Logo.png'; // Corrected the spelling of 'assets'
 import profile from '../assests/profile.jpg'; // Corrected the spelling of 'assets'
+import { Link } from 'react-router-dom';
 
 const Header = () => {
     const [showDropdown, setShowDropdown] = useState(false);
@@ -21,7 +22,7 @@ const Header = () => {
                             <h4> Bob Hyden <span>Administrator</span></h4>
                         </li>
                         {/* <li><a href="change-password.html"><span><i class="fa fa-cog"></i></span> Change Settings </a></li> */}
-                        <li><a href="login.html"><span><i class="fa fa-sign-out"></i></span> Logout</a></li>
+                        <li><Link to= '/'><span><i class="fa fa-sign-out"></i></span> Logout</Link></li>
                     </ul>
                 </div>
                 <div class="clear"></div>
