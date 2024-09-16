@@ -4,40 +4,34 @@ import Login from './componets/Login';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Dashbord from './componets/Dashbord';
 import UserManagment from './componets/UserManagment';
-import Header from './componets/Header';
-import SideNav from './componets/SideNav';
+import Layout from './componets/Layout';
 import {
   BrowserRouter as Router,
-  Switch,
+  // Switch,
   Route,
-  // Link,
+  Link,
   // useRouteMatch,
-  // useParams
+  useParams,
+  Routes
 } from "react-router-dom";
 
 function App() {
   return (
+    // <Router>
     <>
       {/* <UserManagment/> */}
-      <div className='wrapper_main_page'>
-        <Switch>
-          <Route path={`${match.path}/:topicId`}>
-            <Topic />
-          </Route>
-          <Route path={match.path}>
-            <h3>Please select a topic.</h3>
-          </Route>
-        </Switch>
-
-
-        <Header />
-        <div className='wrap_sidebar'>
-          <SideNav />
-          <Dashbord />
-        </div>
-      </div>
-      {/* <Login/> */}
+      {/* <div className='wrapper_main_page'> */}
+      <Router>
+        <Routes>
+          <Route path="/" element={<Login />} />
+          <Route path="/admin/" element={<Layout />}>
+          <Route path="Dashbord" element={<Dashbord />} />
+          <Route path="UserManagment" element={<UserManagment />} />
+        </Route>
+        </Routes>
+      </Router>
     </>
+
   );
 }
 

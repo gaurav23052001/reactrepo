@@ -1,18 +1,19 @@
 import React from 'react'
 import UserManagment from './UserManagment'
+import { Link } from 'react-router-dom'
 
 const SideNav = () => {
   return (
     <div class="SidenavBar">
         <ul>
             <li class="active">
-                <a href="/">
+                <a Link to= '/Dashbord'>
                     <span><i class="fa fa-tachometer"></i></span> Dashboard
                 </a>
             </li>
             
             <li>
-                <a href={UserManagment}>
+                <a Link to= '/Dashbord'>
                     <span><i class="fa fa-user"></i></span> User Management
                 </a>
             </li>
