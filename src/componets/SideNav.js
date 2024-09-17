@@ -25,63 +25,63 @@ const SideNav = () => {
                 </li>
 
                 <li>
-                    <a href="sku-management.html">
+                    <Link to='/admin/SkuManagment'>
                         <span><i class="fa fa-cubes" ></i></span> SKU Management
-                    </a>
+                    </Link>
                 </li>
 
                 <li>
-                    <a href="categories-management.html">
+                    <Link to='/admin/CategoryManagment'>
                         <span><i class="fa fa-database"></i></span> Categories Management
-                    </a>
+                    </Link>
                 </li>
 
                 <li>
-                    <a href="order-management.html">
+                    <Link to='/admin/OrderManagement'>
                         <span><i class="fa fa-shopping-cart"></i></span> Order Management
-                    </a>
+                    </Link>
                 </li>
 
                 <li>
-                    <a href="banner-management.html">
+                    <Link to='/admin/BannerManagement'>
                         <span><i class="fa fa-codepen"></i></span> Banner Management
-                    </a>
+                    </Link>
                 </li>
 
                 <li>
-                    <a href="report-management.html">
+                    <Link to='/admin/ReportManagement'>
                         <span><i class="fa fa-bar-chart"></i></span> Report Management
-                    </a>
+                    </Link>
                 </li>
 
                 <li>
-                    <a href="payment-management.html">
+                    <Link to='/admin/PaymentManagement'>
                         <span><i class="fa fa-money"></i></span> Payment Management
-                    </a>
+                    </Link>
                 </li>
 
                 <li>
-                    <a href="notification-management.html">
+                    <Link to='/admin/NotificationManagement'>
                         <span><i class="fa fa-bell"></i></span> Notification Management
-                    </a>
+                    </Link>
                 </li>
 
                 <li>
-                    <a href="content-management.html">
+                    <Link to='/admin/ContentManagement'>
                         <span><i class="fa fa-font"></i></span> Content Management
-                    </a>
+                    </Link>
                 </li>
 
                 <li>
-                    <a href="change-password.html">
+                    <Link to='/admin/ChangePassword'>
                         <span><i class="fa fa-cog"></i></span> Change Password
-                    </a>
+                    </Link>
                 </li>
 
                 <li>
-                    <a href="login.html">
+                    <Link to='/admin/Logout'>
                         <span><i class="fa fa-sign-out"></i></span> Logout
-                    </a>
+                    </Link>
                 </li>
             </ul>
         </div>
