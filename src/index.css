@@ -11,3 +11,73 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+
+/* Add this to your CSS file (e.g., App.css) */
+
+/* Target the custom_toast class */
+.custom_toast li {
+  /* Adjust the width and max-width of the toast */
+  width: 350px;
+  max-width: 100%;
+
+  /* Background color */
+  background-color: #f0f0f0; /* Light grey background */
+
+  /* Border and border-radius for a rounded look */
+  border-radius: 8px;
+  border: 1px solid #ddd;
+
+  /* Box shadow for a slight elevation effect */
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+
+  /* Padding and margin for spacing */
+  padding: 15px;
+  margin: 10px;
+
+  /* Font settings */
+  font-family: 'Arial', sans-serif;
+  font-size: 14px;
+  color: #333; /* Dark text color */
+
+  /* Text alignment */
+  text-align: left;
+}
+
+/* Close button */
+.custom_toast button {
+  background-color: transparent;
+  border: none;
+  font-size: 16px;
+  color: #333;
+  cursor: pointer;
+  position: absolute;
+  top: 2px;
+  right: 10px;
+}
+
+.custom_toast button:hover {
+  color: #e74c3c; /* Change color on hover */
+}
+
+/* Toast icon (optional) */
+.custom_toast .toast-icon {
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+/* Animation for showing the toast */
+@keyframes toast-slide-in {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.custom_toast {
+  animation: toast-slide-in 0.5s ease-in-out;
+}

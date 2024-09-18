@@ -3,11 +3,23 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { Toaster } from 'sonner';
+
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+ 
+      <App />
+      <Toaster
+      position="top-right"
+      reverseOrder={false}
+      richColors={true}
+      theme="system"
+      closeButton={true}
+      className="custom_toast"
+    />
   </React.StrictMode>
 );
 

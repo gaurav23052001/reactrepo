@@ -1,89 +1,97 @@
-import React from 'react'
-import UserManagment from './UserManagment'
-import { Link } from 'react-router-dom'
+import React, { useState } from 'react'
+import { Link, useLocation , NavLink} from 'react-router-dom'
+import Logout from './Logout';
 
 const SideNav = () => {
+    const [openModal,setOpenModal]=useState(false);
     return (
         <div class="SidenavBar">
             <ul>
-                <li className="active">
-                    <Link to="/admin/Dashbord">
+                <li >
+                    <NavLink to="/admin/Dashbord">
                         <span><i className="fa fa-tachometer"></i></span> Dashboard
-                    </Link>
+                    </NavLink>
                 </li>
 
                 <li>
-                    <Link to='/admin/UserManagment'>
+                    <NavLink to='/admin/UserManagment'>
                         <span><i class="fa fa-user"></i></span> User Management
-                    </Link>
+                    </NavLink>
                 </li>
 
                 <li>
-                    <Link to='/admin/ProductManagment'>
+                    <NavLink to='/admin/ProductManagment'>
                         <span><i class="fa fa-product-hunt"></i></span> Product Management
-                    </Link>
+                    </NavLink>
                 </li>
 
                 <li>
-                    <Link to='/admin/SkuManagment'>
+                    <NavLink to='/admin/SkuManagment'>
                         <span><i class="fa fa-cubes" ></i></span> SKU Management
-                    </Link>
+                    </NavLink>
                 </li>
 
                 <li>
-                    <Link to='/admin/CategoryManagment'>
+                    <NavLink to='/admin/CategoryManagment'>
                         <span><i class="fa fa-database"></i></span> Categories Management
-                    </Link>
+                    </NavLink>
                 </li>
 
                 <li>
-                    <Link to='/admin/OrderManagement'>
+                    <NavLink to='/admin/OrderManagement'>
                         <span><i class="fa fa-shopping-cart"></i></span> Order Management
-                    </Link>
+                    </NavLink>
                 </li>
 
                 <li>
-                    <Link to='/admin/BannerManagement'>
+                    <NavLink to='/admin/BannerManagement'>
                         <span><i class="fa fa-codepen"></i></span> Banner Management
-                    </Link>
+                    </NavLink>
                 </li>
 
                 <li>
-                    <Link to='/admin/ReportManagement'>
+                    <NavLink to='/admin/ReportManagement'>
                         <span><i class="fa fa-bar-chart"></i></span> Report Management
-                    </Link>
+                    </NavLink>
                 </li>
 
                 <li>
-                    <Link to='/admin/PaymentManagement'>
+                    <NavLink to='/admin/PaymentManagement'>
                         <span><i class="fa fa-money"></i></span> Payment Management
-                    </Link>
+                    </NavLink>
                 </li>
 
                 <li>
-                    <Link to='/admin/NotificationManagement'>
+                    <NavLink to='/admin/NotificationManagement'>
                         <span><i class="fa fa-bell"></i></span> Notification Management
-                    </Link>
+                    </NavLink>
                 </li>
 
                 <li>
-                    <Link to='/admin/ContentManagement'>
+                    <NavLink to='/admin/ContentManagement'>
                         <span><i class="fa fa-font"></i></span> Content Management
-                    </Link>
+                    </NavLink>
                 </li>
 
                 <li>
-                    <Link to='/admin/ChangePassword'>
+                    <NavLink to='/admin/ChangePassword'>
                         <span><i class="fa fa-cog"></i></span> Change Password
-                    </Link>
+                    </NavLink>
                 </li>
 
                 <li>
-                    <Link to='/admin/Logout'>
+                    <Link to='' onClick={()=>setOpenModal(true)}>
                         <span><i class="fa fa-sign-out"></i></span> Logout
                     </Link>
                 </li>
             </ul>
+
+            {openModal && (
+                <Logout
+                show={openModal}
+                handleClose={()=>setOpenModal(false)}
+                />
+            )}
         </div>
     )
 }

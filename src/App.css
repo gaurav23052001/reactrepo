@@ -432,7 +432,7 @@ p {
   left: 20px
 }
 
-.SidenavBar ul li.active a,
+.SidenavBar ul li a.active,
 .SidenavBar ul li a:hover {
   background-color: #04bad2;
   color: #fff

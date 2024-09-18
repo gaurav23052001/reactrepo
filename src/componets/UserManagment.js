@@ -9,14 +9,66 @@ import user8 from '../assests/user8.jpg'
 import user9 from '../assests/user9.jpg'
 import user10 from '../assests/user10.jpg'
 
-import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
+import React, { useState, useEffect } from 'react';
 import Modal from 'react-bootstrap/Modal';
+import {toastMessage} from '../utils/toast';
+
 const UserManagment = () => {
     const [show, setShow] = useState(false);
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+
+
+    //new changes
+    const [users, setUsers] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        // Retrieve token from localStorage
+        const token = localStorage.getItem('token'); // Adjust key based on your storage
+
+        if (!token) {
+            setError('No token found');
+            setLoading(false);
+            return;
+        }
+
+        // Fetch users using the token from localStorage
+        const fetchUsers = async () => {
+            try {
+                const response = await fetch(`${process.env.REACT_APP_API_URL}/userList`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`, // Use the token in headers
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to fetch users');
+                }
+
+                const data = await response.json();
+
+                setUsers(data);
+            } catch (error) {
+                if (error?.response?.data?.code === 400)
+                    return toastMessage(error?.response?.data?.message, "error", "ASDFG");
+                if (error?.response?.data?.code == 500) {
+                    toastMessage(error?.response?.data?.message, "warning", "ASDFG");
+                }
+                setError(error.message);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchUsers();
+    }, []);
+
 
     return (
         <div>
