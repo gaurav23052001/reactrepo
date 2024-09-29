@@ -2,11 +2,11 @@ import React from 'react'
 
 const OrderDetails = () => {
   return (
-    <div class="WrapperArea">
-        <div class="WrapperBox">
-            <div class="Small-Wrapper"> 
-                <h4 class="Title">Order  Details </h4>
-                <div class="OrderArea">
+    <div className="WrapperArea">
+        <div className="WrapperBox">
+            <div className="Small-Wrapper"> 
+                <h4 className="Title">Order  Details </h4>
+                <div className="OrderArea">
                     <ul>
                         <li><span>Order ID</span> #24563298</li>
                         <li><span>Order Date</span> 20/3/2019</li>

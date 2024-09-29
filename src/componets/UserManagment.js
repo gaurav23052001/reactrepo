@@ -1,291 +1,171 @@
-import user1 from '../assests/user1.jpg'
-import user2 from '../assests/user2.jpg'
-import user3 from '../assests/user3.jpg'
-import user4 from '../assests/user4.jpg'
-// import user5 from '../assests/user5.jpg'
-import user6 from '../assests/user6.jpg'
-import user7 from '../assests/user7.jpg'
-import user8 from '../assests/user8.jpg'
-import user9 from '../assests/user9.jpg'
-import user10 from '../assests/user10.jpg'
-
-import Button from 'react-bootstrap/Button';
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import {toastMessage} from '../utils/toast';
+import ReactPaginate from 'react-paginate';
+import { toastMessage } from '../utils/toast';
 
-const UserManagment = () => {
+const UserManagement = () => {
     const [show, setShow] = useState(false);
-
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
-
-
-    //new changes
+    const [deleteUserId, setDeleteUserId] = useState(null);
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [currentPage, setCurrentPage] = useState(0); // Start from page 0
+    const [totalPages, setTotalPages] = useState(0);
+    const itemsPerPage = 2;
+
+    const handleClose = () => {
+        setShow(false);
+        setDeleteUserId(null);
+    };
+
+    const handleShow = (userId) => {
+        setShow(true);
+        setDeleteUserId(userId);
+    };
+
+    const fetchUsers = async (page = 0) => {
+        try {
+            const token = localStorage.getItem('token');
+
+            if (!token) {
+                setError('No token found');
+                setLoading(false);
+                return;
+            }
+
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/userList?page=${page + 1}&limit=${itemsPerPage}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to fetch users');
+            }
+
+            const data = await response.json();
+            setUsers(data?.data?.user);
+            setTotalPages(Math.ceil((data?.total || 0) / itemsPerPage));
+        } catch (error) {
+            toastMessage(error?.response?.data?.message || error.message, "error", "ASDFG");
+            setError(error.message);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     useEffect(() => {
-        // Retrieve token from localStorage
-        const token = localStorage.getItem('token'); // Adjust key based on your storage
+        fetchUsers(currentPage);
+    }, [currentPage]);
+
+    const handleDelete = async () => {
+        const token = localStorage.getItem('token');
 
         if (!token) {
-            setError('No token found');
-            setLoading(false);
+            toastMessage("No token found", "error", "ASDFG");
             return;
         }
 
-        // Fetch users using the token from localStorage
-        const fetchUsers = async () => {
-            try {
-                const response = await fetch(`${process.env.REACT_APP_API_URL}/userList`, {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': `Bearer ${token}`, // Use the token in headers
-                        'Content-Type': 'application/json',
-                    },
-                });
+        try {
+            const response = await axios.delete(`${process.env.REACT_APP_API_URL}/deleteUser/${deleteUserId}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+            });
 
-                if (!response.ok) {
-                    throw new Error('Failed to fetch users');
-                }
-
-                const data = await response.json();
-
-                setUsers(data);
-            } catch (error) {
-                if (error?.response?.data?.code === 400)
-                    return toastMessage(error?.response?.data?.message, "error", "ASDFG");
-                if (error?.response?.data?.code == 500) {
-                    toastMessage(error?.response?.data?.message, "warning", "ASDFG");
-                }
-                setError(error.message);
-            } finally {
-                setLoading(false);
+            if (response?.data?.code === 400) {
+                return toastMessage(response?.data?.message, "error", "ASDFG");
             }
-        };
 
-        fetchUsers();
-    }, []);
+            toastMessage(response?.data?.message, "success", "ASDFG");
+            fetchUsers(currentPage);
+            handleClose();
+        } catch (error) {
+            toastMessage(error?.response?.data?.message || error.message, "error", "ASDFG");
+            setError(error.message);
+        }
+    };
 
+    const handlePageChange = (selectedPage) => {
+        setCurrentPage(selectedPage.selected); // Update the current page
+    };
 
     return (
         <div>
-            <div class="WrapperArea">
-                <div class="WrapperBox">
-                    <div class="Small-Wrapper">
-                        <h4 class="Title">User Management</h4>
-                        <div class="TableList">
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>S.No</th>
-                                        <th>Profile</th>
-                                        <th>Name</th>
-                                        <th>Email </th>
-                                        <th>Mobile</th>
-                                        <th>Address</th>
-                                        <th>Total orders </th>
-                                        <th>action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>
-                                            <figure><img src={user1} alt='' /></figure>
-                                        </td>
-                                        <td>Lauren Molive</td>
-                                        <td>lauren@gmail.com</td>
-                                        <td>+91 9876543210</td>
-                                        <td>H-146/147 Noida sector-63, U.P-201301</td>
-                                        <td>25</td>
-                                        <td>
-                                            <Button variant="danger" onClick={handleShow}>
-                                                <i className="fa fa-trash"></i> {/* Assuming you use FontAwesome */}
-                                            </Button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td>
-                                            <figure><img src={user2} alt='' /></figure>
-                                        </td>
-                                        <td>Jaques Amole</td>
-                                        <td>Jaques@gmail.com</td>
-                                        <td>+91 9876543210</td>
-                                        <td>H-146/147 Noida sector-63, U.P-201301</td>
-                                        <td>15</td>
-                                        <td>
-                                            <Button variant="danger" onClick={handleShow}>
-                                                <i className="fa fa-trash"></i> {/* Assuming you use FontAwesome */}
-                                            </Button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>3</td>
-                                        <td>
-                                            <figure><img src={user3} alt='' /></figure>
-                                        </td>
-                                        <td>Val Adictorian</td>
-                                        <td>Adictorian@gmail.com</td>
-                                        <td>+91 9876543210</td>
-                                        <td>H-146/147 Noida sector-63, U.P-201301</td>
-                                        <td>18</td>
-                                        <td>
-                                            <Button variant="danger" onClick={handleShow}>
-                                                <i className="fa fa-trash"></i> {/* Assuming you use FontAwesome */}
-                                            </Button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>4</td>
-                                        <td>
-                                            <figure><img src={user4} alt='' /></figure>
-                                        </td>
-                                        <td>Marsha Mello</td>
-                                        <td>Marsha@gmail.com</td>
-                                        <td>+91 9876543210</td>
-                                        <td>H-146/147 Noida sector-63, U.P-201301</td>
-                                        <td>12</td>
-                                        <td>
-                                            <Button variant="danger" onClick={handleShow}>
-                                                <i className="fa fa-trash"></i> {/* Assuming you use FontAwesome */}
-                                            </Button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>5</td>
-                                        <td>
-                                            <figure><img src={user6} alt='' /></figure>
-                                        </td>
-                                        <td>Carol Sell</td>
-                                        <td>Carol@gmail.com</td>
-                                        <td>+91 9876543210</td>
-                                        <td>H-146/147 Noida sector-63, U.P-201301</td>
-                                        <td>08</td>
-                                        <td>
-                                            <Button variant="danger" onClick={handleShow}>
-                                                <i className="fa fa-trash"></i> {/* Assuming you use FontAwesome */}
-                                            </Button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>6</td>
-                                        <td>
-                                            <figure><img src={user6} alt='' /></figure>
-                                        </td>
-                                        <td>Minnie Strone</td>
-                                        <td>Minnie@gmail.com</td>
-                                        <td>+91 9876543210</td>
-                                        <td>H-146/147 Noida sector-63, U.P-201301</td>
-                                        <td>05</td>
-                                        <td>
-                                            <Button variant="danger" onClick={handleShow}>
-                                                <i className="fa fa-trash"></i> {/* Assuming you use FontAwesome */}
-                                            </Button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>7</td>
-                                        <td>
-                                            <figure><img src={user7} alt='' /></figure>
-                                        </td>
-                                        <td>Cody Pendant</td>
-                                        <td>Pendant@gmail.com</td>
-                                        <td>+91 9876543210</td>
-                                        <td>H-146/147 Noida sector-63, U.P-201301</td>
-                                        <td>17</td>
-                                        <td>
-                                            <Button variant="danger" onClick={handleShow}>
-                                                <i className="fa fa-trash"></i> {/* Assuming you use FontAwesome */}
-                                            </Button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>8</td>
-                                        <td>
-                                            <figure><img src={user8} alt='' /></figure>
-                                        </td>
-                                        <td>Genie Inabottle</td>
-                                        <td>Inabottle@gmail.com</td>
-                                        <td>+91 9876543210</td>
-                                        <td>H-146/147 Noida sector-63, U.P-201301</td>
-                                        <td>11</td>
-                                        <td>
-                                            <Button variant="danger" onClick={handleShow}>
-                                                <i className="fa fa-trash"></i> {/* Assuming you use FontAwesome */}
-                                            </Button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>9</td>
-                                        <td>
-                                            <figure><img src={user9} alt='' /></figure>
-                                        </td>
-                                        <td>Cathy Derr</td>
-                                        <td>Cathy@gmail.com</td>
-                                        <td>+91 9876543210</td>
-                                        <td>H-146/147 Noida sector-63, U.P-201301</td>
-                                        <td>09</td>
-                                        <td>
-                                            <Button variant="danger" onClick={handleShow}>
-                                                <i className="fa fa-trash"></i> {/* Assuming you use FontAwesome */}
-                                            </Button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>10</td>
-                                        <td>
-                                            <figure><img src={user10} alt='' /></figure>
-                                        </td>
-                                        <td>Mack Adamiae</td>
-                                        <td>Mack@gmail.com</td>
-                                        <td>+91 9876543210</td>
-                                        <td>H-146/147 Noida sector-63, U.P-201301</td>
-                                        <td>13</td>
-                                        <td>
-                                            <Button variant="danger" onClick={handleShow}>
-                                                <i className="fa fa-trash"></i> {/* Assuming you use FontAwesome */}
-                                            </Button>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+            <div className="WrapperArea">
+                <div className="WrapperBox">
+                    <div className="Small-Wrapper">
+                        <h4 className="Title">User Management</h4>
+                        <div className="TableList">
+                            {loading ? <p>Loading...</p> : (
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>S.No</th>
+                                            <th>Name</th>
+                                            <th>Email</th>
+                                            <th>Mobile</th>
+                                            <th>Address</th>
+                                            <th>Total Orders</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {users?.length > 0 && users?.map((item, index) => (
+                                            <tr key={item._id || `user-${index}`}>
+                                                <td>{(currentPage * itemsPerPage) + (index + 1)}</td>
+                                                <td>{item.name}</td>
+                                                <td>{item.email}</td>
+                                                <td>{item.phone}</td>
+                                                <td>{item.address}</td>
+                                                <td>{item.age}</td>
+                                                <td>
+                                                    <Button variant="danger" onClick={() => handleShow(item._id)}>
+                                                        <i className="fa fa-trash"></i>
+                                                    </Button>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            )}
                         </div>
 
-                        <div class="Pagination">
-                            <ul>
-                                <li><a href="/">Previous</a></li>
-                                <li class="active"><a href="/">1</a></li>
-                                <li><a href="/">2</a></li>
-                                <li><a href="/">3</a></li>
-                                <li><a href="/">Next</a></li>
-                            </ul>
-                        </div>
-
-
+                        {/* Pagination Section using react-paginate */}
+                        <ReactPaginate
+                            previousLabel={"Previous"}
+                            nextLabel={"Next"}
+                            breakLabel={"..."}
+                            breakClassName={"break-me"}
+                            pageCount={totalPages}
+                            marginPagesDisplayed={2}
+                            pageRangeDisplayed={5}
+                            onPageChange={handlePageChange}
+                            containerClassName={"pagination"}
+                            subContainerClassName={"pages pagination"}
+                            activeClassName={"active"}
+                        />
                     </div>
                 </div>
             </div>
 
             <Modal show={show} onHide={handleClose} animation={false}>
                 <Modal.Header closeButton>
-                    <Modal.Title>DELETE</Modal.Title>
+                    <Modal.Title>Delete User</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>Are you sure you want to delete this Member ?</Modal.Body>
+                <Modal.Body>Are you sure you want to delete this user?</Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
-                        no
-                    </Button>
-                    <Button variant="primary" onClick={handleClose}>
-                        Yes
-                    </Button>
+                    <Button variant="secondary" onClick={handleClose}>No</Button>
+                    <Button variant="primary" onClick={handleDelete}>Yes</Button>
                 </Modal.Footer>
             </Modal>
         </div>
-    )
-}
+    );
+};
 
-export default UserManagment
+export default UserManagement;

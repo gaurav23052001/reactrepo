@@ -8,24 +8,24 @@ const Header = () => {
 
     return (
 
-        <div class="Header">
-            <div class="Logo">
+        <div className="Header">
+            <div className="Logo">
                 <img src={logo} />
             </div>
-            <div class="Navigation">
-                <div class="Avater">
-                    <a href="javascript:void(0);">
-                        <figure><img src={profile} /></figure> Bob Hyden </a>
+            <div className="Navigation">
+                <div className="Avater">
+                    <Link href="#">
+                        <figure><img src={profile} /></figure> Bob Hyden </Link>
                     <ul>
                         <li>
                             <figure><img src={profile} /></figure>
                             <h4> Bob Hyden <span>Administrator</span></h4>
                         </li>
-                        {/* <li><a href="change-password.html"><span><i class="fa fa-cog"></i></span> Change Settings </a></li> */}
-                        <li><Link to= '/'><span><i class="fa fa-sign-out"></i></span> Logout</Link></li>
+                        {/* <li><a href="change-password.html"><span><i className="fa fa-cog"></i></span> Change Settings </a></li> */}
+                        <li><Link to='/'><span><i className="fa fa-sign-out"></i></span> Logout</Link></li>
                     </ul>
                 </div>
-                <div class="clear"></div>
+                <div className="clear"></div>
             </div>
         </div>
     );
